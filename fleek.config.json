@@ -1,0 +1,9 @@
+{
+  "sites": [
+    {
+      "slug": "quiz3",
+      "distDir": "out",
+      "buildCommand": "npm run build"
+    }
+  ]
+}
