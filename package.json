@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@dynamic-labs/ethereum": "^2.2.4",
+    "@dynamic-labs/sdk-react-core": "^2.2.4",
     "@instructor-ai/instructor": "^1.5.0",
     "@react-icons/all-files": "^4.1.0",
     "axios": "^1.7.2",
@@ -17,6 +19,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
+    "viem": "^2.16.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {

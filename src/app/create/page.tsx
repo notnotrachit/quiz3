@@ -3,8 +3,24 @@ import { useState } from "react";
 // import { MdDelete } from "react-icons/md";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import axios from "axios";
+import { useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+
 
 export default function Home() {
+  const isLoggedIn = useIsLoggedIn();
+  // console.log(isLoggedIn);
+  const { sdkHasLoaded } = useDynamicContext();
+  if (!sdkHasLoaded) {
+    return <div>Loading...</div>;
+  }
+  else {
+      if (!isLoggedIn) {
+        return <div>Not logged in</div>;
+      }
+  }
+
+
   interface Question {
     question: string;
     answer: string;

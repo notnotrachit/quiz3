@@ -1,4 +1,10 @@
 import Image from "next/image";
+import {
+  DynamicContextProvider,
+  DynamicWidget,
+} from "@dynamic-labs/sdk-react-core";
+import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
+
 
 export default function Home() {
   return (
@@ -20,6 +26,7 @@ export default function Home() {
           priority
         />
       </div>
+      <DynamicWidget/>
 
       <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
         <a
