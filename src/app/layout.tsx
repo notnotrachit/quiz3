@@ -6,6 +6,8 @@ import {
   DynamicWidget,
 } from "@dynamic-labs/sdk-react-core";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
+import Bg from "@/components/bg";
+import { IsBrowser } from "@dynamic-labs/sdk-react-core";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,13 +22,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="matrix">
       <DynamicContextProvider
         settings={{
           environmentId: "b9824ce4-ba83-4d05-a8d2-404de8fb2eb4",
           walletConnectors: [EthereumWalletConnectors],
         }}
       >
+        <IsBrowser>
+          <Bg />
+        </IsBrowser>
         <body className={inter.className}>{children}</body>
       </DynamicContextProvider>
     </html>

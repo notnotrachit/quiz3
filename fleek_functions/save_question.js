@@ -4,6 +4,9 @@ import verify from "./node_modules/jsonwebtoken/index.js";
 const b64publicKey = "";
 const publicKey = Buffer.from(b64publicKey, "base64").toString("utf-8");
 
+
+
+
 export const main = async (params) => {
   const { body } = params;
   const decodedToken = verify(body.token, publicKey);

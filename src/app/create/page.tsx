@@ -75,15 +75,12 @@ export default function Home() {
   }
 
   return (
-    <main className="flex justify-center p-24 bg-gray-100 min-h-screen text-black">
-      <div className="bg-white p-10 rounded-lg shadow-md">
+    <main className="flex justify-center p-24 min-h-screen text-[#00ff2b]">
+      <div className="p-10 rounded-lg shadow-md backdrop-blur-xl bg-black/20 border-2 border-[#00ff2b]">
         <h1 className="text-3xl font-bold mb-6">Create a new Quiz</h1>
 
         <form>
-          <label
-            htmlFor="quiz-name"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="quiz-name" className="block text-sm font-medium">
             Quiz Name
           </label>
           <input
@@ -92,12 +89,12 @@ export default function Home() {
             name="quiz-name"
             value={quizName}
             onChange={(e) => setQuizName(e.target.value)}
-            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            className="bg-white/10 mt-1 block w-full rounded-md border-2 border-[#00ff2b] shadow-sm focus:ring-opacity-50"
           />
 
           <label
             htmlFor="quiz-description"
-            className="block text-sm font-medium text-gray-700 mt-4"
+            className="block text-sm font-medium mt-4"
           >
             Quiz Description
           </label>
@@ -106,12 +103,12 @@ export default function Home() {
             name="quiz-description"
             value={quizDescription}
             onChange={(e) => setQuizDescription(e.target.value)}
-            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            className="bg-white/10 mt-1 block w-full rounded-md border-2 border-[#00ff2b] shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
 
           <label
             htmlFor="quiz-questions"
-            className="block text-sm font-medium text-gray-700 mt-4"
+            className="block text-sm font-medium mt-4"
           >
             Questions
           </label>
@@ -119,7 +116,7 @@ export default function Home() {
             {questions.map((question, index) => (
               <div
                 key={index}
-                className="mt-4 border border-gray-500 p-2 rounded-md"
+                className="mt-4 border border-[#00ff2b] p-2 rounded-md"
               >
                 <textarea
                   id={`question-${index}`}
@@ -139,11 +136,9 @@ export default function Home() {
                       })
                     )
                   }
-                  className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-2"
+                  className="bg-white/10 mt-1 block w-full rounded-md border-2 border-[#00ff2b] shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-2"
                 />
-                <label className="block text-sm font-medium text-gray-700">
-                  Options
-                </label>
+                <label className="block text-sm font-medium">Options</label>
                 {question.options.map((option, optionIndex) => (
                   <div key={optionIndex} className="">
                     <div className={"flex space-x-2 items-center"}>
@@ -151,13 +146,11 @@ export default function Home() {
                         type="radio"
                         id={`answer-${index}`}
                         name={`answer-${index}`}
-                        className="mt-1"
+                        className="mt-1 radio radio-primary"
                         placeholder={"Option"}
-                        {
-                            ...(question.answer === question.options[optionIndex]
-                                ? { checked: true }
-                                : {})
-                        }
+                        {...(question.answer === question.options[optionIndex]
+                          ? { checked: true }
+                          : {})}
                       />
                       <textarea
                         id={`option-${index}-${optionIndex}`}
@@ -182,7 +175,7 @@ export default function Home() {
                             })
                           )
                         }
-                        className="px-2 mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-grey-300 focus:ring focus:ring-grey-200 focus:ring-opacity-50"
+                        className="bg-white/10 px-2 mt-1 block w-full rounded-md border-2 border-[#00ff2b] shadow-sm focus:border-grey-300 focus:ring focus:ring-grey-200 focus:ring-opacity-50"
                       />
 
                       <button
@@ -224,14 +217,14 @@ export default function Home() {
                       })
                     )
                   }
-                  className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-[#00ff2b] hover:bg-[#00ff2b]/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Add Option
                 </button>
 
                 <label
                   htmlFor={`explanation-${index}`}
-                  className="block text-sm font-medium text-gray-700 mt-4"
+                  className="block text-sm font-medium mt-4"
                 >
                   Explanation
                 </label>
@@ -240,22 +233,20 @@ export default function Home() {
                   name={`explanation-${index}`}
                   placeholder={"Explanation"}
                   value={question.explanation}
-                  onChange={
-                    (e) =>
-                      setQuestions(
-                        questions.map((q, qIndex) => {
-                          if (qIndex === index) {
-                            return {
-                              ...q,
-                              explanation: [e.target.value],
-                            };
-                          }
-                          return q;
-                        })
-                      )
+                  onChange={(e) =>
+                    setQuestions(
+                      questions.map((q, qIndex) => {
+                        if (qIndex === index) {
+                          return {
+                            ...q,
+                            explanation: [e.target.value],
+                          };
+                        }
+                        return q;
+                      })
+                    )
                   }
-                
-                  className="px-2 mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  className="bg-white/10 px-2 mt-1 block w-full rounded-md border-2 border-[#00ff2b] shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
                 <button
                   type="button"
@@ -285,7 +276,7 @@ export default function Home() {
                   },
                 ])
               }
-              className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="mt-4 inline-flex justify-center btn btn-outline btn-primary"
             >
               Add Question
             </button>
@@ -293,14 +284,14 @@ export default function Home() {
             <button
               type="button"
               onClick={getAIQuestions}
-              className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="mt-4 inline-flex justify-center btn btn-outline btn-primary"
             >
               Generate Questions using AI
             </button>
           </div>
           <button
             type="submit"
-            className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="mt-4 inline-flex justify-center btn btn-outline btn-primary"
           >
             Create Quiz
           </button>
