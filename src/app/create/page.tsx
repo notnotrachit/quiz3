@@ -32,6 +32,24 @@ export default function Home() {
   const [quizName, setQuizName] = useState<string>("");
   const [quizDescription, setQuizDescription] = useState<string>("");
 
+  async function createQuiz() {
+    fetch("https://incalculable-football-gigantic.functions.on-fleek.app", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quiz_data: questions,
+        quiz_name: quizName,
+        quiz_description: quizDescription,
+        user_address: "0x1234",
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => console.log(response))
+      .catch((err) => console.error(err));
+  }
+
   async function getAIQuestions() {
     const options = {
       method: "POST",
@@ -290,7 +308,8 @@ export default function Home() {
             </button>
           </div>
           <button
-            type="submit"
+            onClick={createQuiz}
+            type="button"
             className="mt-4 inline-flex justify-center btn btn-outline btn-primary"
           >
             Create Quiz
