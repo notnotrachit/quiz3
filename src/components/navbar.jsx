@@ -18,7 +18,7 @@ export const Navbar = () => {
           <a className="btn btn-ghost text-xl">DeQuiz</a>
         </div>
 
-        <div className="flex-none gap-2">
+        <div className="flex-none gap-2 mr-3">
           <DynamicWidget />
         </div>
       </div>

@@ -30,11 +30,13 @@ export default function RootLayout({
           walletConnectors: [EthereumWalletConnectors],
         }}
       >
-        <div className="w-full p-8 flex justify-center items-center ">
-          <Navbar />
-        </div>
         <IsBrowser>{/* <Bg /> */}</IsBrowser>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <div className="w-full p-8 flex justify-center items-center ">
+            <Navbar />
+          </div>
+          {children}
+        </body>
       </DynamicContextProvider>
     </html>
   );
