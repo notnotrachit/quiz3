@@ -6,20 +6,25 @@ import axios from "axios";
 import { useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 
-
 export default function Home() {
   const isLoggedIn = useIsLoggedIn();
   // console.log(isLoggedIn);
   const { sdkHasLoaded } = useDynamicContext();
   if (!sdkHasLoaded) {
-    return <div>Loading...</div>;
-  }
-  else {
-      if (!isLoggedIn) {
-        return <div>Not logged in</div>;
-      }
+    return (
+      <div className="flex justify-center p-24 min-h-screen items-center">
+        Loading...
+      </div>
+    );
   }
 
+  if (!isLoggedIn) {
+    return (
+      <div className="flex justify-center p-24 min-h-screen items-center">
+        Not logged in
+      </div>
+    );
+  }
 
   interface Question {
     question: string;
@@ -33,18 +38,21 @@ export default function Home() {
   const [quizDescription, setQuizDescription] = useState<string>("");
 
   async function createQuiz() {
-    fetch("https://incalculable-football-gigantic.functions.on-fleek.app", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        quiz_data: questions,
-        quiz_name: quizName,
-        quiz_description: quizDescription,
-        user_address: "0x1234",
-      }),
-    })
+    fetch(
+      "https://incalculable-football-gigantic.functions.on-fleek.app/save_question",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          quiz_data: questions,
+          quiz_name: quizName,
+          quiz_description: quizDescription,
+          user_address: "0x1234",
+        }),
+      }
+    )
       .then((response) => response.json())
       .then((response) => console.log(response))
       .catch((err) => console.error(err));
@@ -55,9 +63,9 @@ export default function Home() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        "topic": quizName,
-        "description": quizDescription,
-        }),
+        topic: quizName,
+        description: quizDescription,
+      }),
     };
     console.log(options);
 
@@ -76,7 +84,7 @@ export default function Home() {
         ]);
       })
       .catch((err) => console.error(err));
-      console.log(questions);
+    console.log(questions);
     // console.log(respons.json());
     // const question = await respons.json();
     // console.log(question);
