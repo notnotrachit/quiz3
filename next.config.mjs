@@ -10,6 +10,7 @@ const nextConfig = {
       "images.unsplash.com",
       "avatars.githubusercontent.com",
     ],
+    unoptimized: true,
   },
   experimental: {
     missingSuspenseWithCSRBailout: false,

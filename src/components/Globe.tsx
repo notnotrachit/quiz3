@@ -406,9 +406,6 @@ export function GlobeDemo() {
      md:h-auto
        dark:bg-black bg-white relative w-full"
     >
-      <div className="w-full p-8 flex justify-center items-center ">
-        <Navbar />
-      </div>
       <div className="max-w-7xl mx-auto w-full relative overflow-hidden h-full md:h-[40rem] px-4">
         <motion.div
           initial={{
