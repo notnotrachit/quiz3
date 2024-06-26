@@ -2,11 +2,13 @@
 import { useState } from "react";
 // import { MdDelete } from "react-icons/md";
 import { RiDeleteBin6Fill } from "react-icons/ri";
-import axios from "axios";
 import { useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 
 export default function Home() {
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [quizName, setQuizName] = useState<string>("");
+  const [quizDescription, setQuizDescription] = useState<string>("");
   const isLoggedIn = useIsLoggedIn();
   // console.log(isLoggedIn);
   const { sdkHasLoaded } = useDynamicContext();
@@ -32,10 +34,6 @@ export default function Home() {
     options: string[];
     explanation: string[];
   }
-
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [quizName, setQuizName] = useState<string>("");
-  const [quizDescription, setQuizDescription] = useState<string>("");
 
   async function createQuiz() {
     fetch(
