@@ -1,5 +1,6 @@
 // import mongoose from "mongoose";
 
+
 function makeid(length) {
   let result = "";
   const characters =
@@ -80,7 +81,103 @@ async function get_quiz(body) {
     body: JSON.stringify(payload),
   });
   const data = await response.json();
-  return data.results[0];
+  const quiz_data = JSON.parse(
+    atob(data.results[0].response.result.rows[0][4].value)
+  );
+
+  for (let i = 0; i < quiz_data.length; i++) {
+    delete quiz_data[i].answer;
+    delete quiz_data[i].explanation;
+  }
+
+  const quiz = {
+    quiz_name: data.results[0].response.result.rows[0][2].value,
+    quiz_description: data.results[0].response.result.rows[0][3].value,
+    quiz_data: quiz_data,
+    owner: data.results[0].response.result.rows[0][1].value,
+  };
+  return quiz;
+}
+
+async function submit_attempt(body){
+  const quiz_id = body.quiz_id;
+  const user_address = body.user_address;
+  const answers = body.answers;
+  const payload = {
+    requests: [
+      {
+        type: "execute",
+        stmt: {
+          sql: `SELECT * FROM quiz WHERE id = '${quiz_id}'`,
+        },
+      },
+      { type: "close" },
+    ],
+  };
+  const uri = "https://quiz3-notnotrachit.turso.io/v2/pipeline";
+  const response = await fetch(uri, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ` + TursoKEY,
+    },
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json();
+  const quiz_data = JSON.parse(
+    atob(data.results[0].response.result.rows[0][4].value)
+  );
+
+  let score = 0;
+  const max_score = quiz_data.length;
+  for (let i = 0; i < quiz_data.length; i++) {
+    console.log(quiz_data[i].answer, answers[i]);
+    if(quiz_data[i].answer === answers[i]){
+      score += 1;
+    }
+  }
+
+  const attempt_id = makeid(10);
+  const payload2 = {
+    requests: [
+      {
+        type: "execute",
+        stmt: {
+          sql: `CREATE TABLE IF NOT EXISTS attempts (
+          id PRIMARY KEY,
+          quiz_id TEXT,
+          user_address TEXT,
+          answers TEXT,
+          score INT,
+          max_score INT,
+          timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+        )`,
+        },
+      },
+      {
+        type: "execute",
+        stmt: {
+          sql: `INSERT INTO attempts (id, quiz_id, user_address, answers, score, max_score) VALUES ('${attempt_id}' ,'${quiz_id}', '${user_address}', '${JSON.stringify(answers)}', ${score}, ${max_score})`,
+        },
+      },
+      { type: "close" },
+    ],
+  };
+
+  const uri2 = "https://quiz3-notnotrachit.turso.io/v2/pipeline";
+  const response2 = await fetch(uri2, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ` + TursoKEY,
+    },
+    body: JSON.stringify(payload2),
+  });
+  // const data2 = await response2.json();
+  // console.log(data2.results[1]);
+  return score;
+
 }
 
 export const main = async (params) => {
@@ -90,44 +187,20 @@ export const main = async (params) => {
       return save_question(body);
     case "/get_quiz":
       return get_quiz(body);
+    case "/submit_attempt":
+      return submit_attempt(body);
     default:
       return { error: "path not found" };
   }
 };
 
-// console.log(
-//   await main({
-//     body: {
-//       quiz_data: [
-//         {
-//           question: "What is the main concept behind Web 3?",
-//           answer: "Decentralized web",
-//           options: [
-//             "Centralized web",
-//             "Decentralized web",
-//             "Static web",
-//             "Dynamic web",
-//           ],
-//           explanation:
-//             "Web 3, also known as Web3.0, is the next generation of the internet, where decentralized networks and protocols replace centralized servers. This allows for a more transparent and user-controlled online experience.",
-//         },
-//         {
-//           question: "What is the main difference between Web 2.0 and Web 3.0?",
-//           answer:
-//             "Web 3.0, also known as the semantic web, introduces more intelligent, flexible, and connected web services. Unlike Web 2.0, which is primarily focused on user-generated content, Web 3.0 aims to make the web understand and process data with the help of AI, making the web more intelligent and intuitive.",
-//           options: [
-//             "Web 3.0 is focused on user-generated content like Web 2.0",
-//             "Web 3.0 aims to make the web more intelligent and intuitive",
-//             "Web 3.0 is not different from Web 2.0",
-//             "Web 3.0 is about the physical internet",
-//           ],
-//           explanation:
-//             "Web 3.0 provides a superior user experience by understanding and processing data, while Web 2.0 merely displays it. Web 3.0 uses AI, machine learning, and semantic web technologies to achieve its goals. It's about connecting data and making it more meaningful.",
-//         },
-//       ],
-//       quiz_name: "Web 3 ",
-//       quiz_description: "a simple quiz on web3",
-//       user_address: "0x1234",
-//     },
-//   })
-// );
+// get_quiz({ quiz_id: "xL6qKKlXHx" });
+
+// submit_attempt({
+//   quiz_id: "KGetymyZMB",
+//   user_address: "0x123",
+//   answers: {
+//     0: "a",
+//     1: "runserver",
+//   },
+// });
