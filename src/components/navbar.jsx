@@ -1,8 +1,6 @@
 import React from "react";
 import { BiNetworkChart } from "react-icons/bi";
-import {
-  DynamicWidget,
-} from "@dynamic-labs/sdk-react-core";
+import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 
 export const Navbar = () => {
   return (
@@ -14,7 +12,7 @@ export const Navbar = () => {
           </a>
         </div>
 
-        <div className="">
+        <div className="hidden md:flex">
           <a className="btn btn-ghost text-xl">DeQuiz</a>
         </div>
 
