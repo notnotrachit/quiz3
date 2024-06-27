@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useSearchParams } from "next/navigation";
-import { Wallet } from "@dynamic-labs/sdk-react-core";
 
 export default function Play() {
   const isLoggedIn = useIsLoggedIn();
@@ -14,6 +13,7 @@ export default function Play() {
   const [quiz, setQuiz] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState<any>({});
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1); // Start with -1 to indicate the introduction screen
 
   useEffect(() => {
     const quiz_id = searchParams.get("quiz");
@@ -48,6 +48,14 @@ export default function Play() {
       ...prevAnswers,
       [questionIndex]: answerIndex,
     }));
+  }
+
+  function handleNextQuestion() {
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+  }
+
+  function handlePreviousQuestion() {
+    setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
   }
 
   function handleSubmit(event: React.FormEvent) {
@@ -85,37 +93,89 @@ export default function Play() {
     );
   }
 
+  if (!quiz) {
+    return null;
+  }
+
+  if (currentQuestionIndex === -1) {
+    // Introduction screen
+    return (
+      <main className="flex justify-center p-24 min-h-screen">
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Welcome to the Quiz!</h2>
+          <button
+            onClick={handleNextQuestion}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+          >
+            Play
+          </button>
+          <button
+            onClick={() => console.log("Leaderboard button clicked")}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Leaderboard
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  const currentQuestion = quiz.quiz_data[currentQuestionIndex];
+
   return (
     <main className="flex justify-center p-24 min-h-screen">
       <form onSubmit={handleSubmit}>
-        {/* Render your quiz data here */}
-        {quiz && <div>{quiz.quiz_name}</div>}
-        {/* questions */}
-        {quiz &&
-          quiz.quiz_data.map((question: any, questionIndex: number) => (
-            <div key={questionIndex}>
-              <h2>{question.question}</h2>
-              <ul>
-                {question.options.map((answer: any, answerIndex: number) => (
-                  <li key={answerIndex}>
-                    <label>
-                      <input
-                        type="radio"
-                        name={`question-${questionIndex}`}
-                        value={answerIndex}
-                        checked={selectedAnswers[questionIndex] === answer}
-                        onChange={() =>
-                          handleAnswerSelect(questionIndex, answer)
-                        }
-                      />
-                      {answer}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        <button type="submit">Submit</button>
+        <div key={currentQuestionIndex} className="mb-4">
+          <h2 className="text-xl font-bold mb-2">{currentQuestion.question}</h2>
+          <ul>
+            {currentQuestion.options.map((answer: any, answerIndex: number) => (
+              <li key={answerIndex} className="mb-2">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name={`question-${currentQuestionIndex}`}
+                    value={answerIndex}
+                    checked={selectedAnswers[currentQuestionIndex] === answerIndex}
+                    onChange={() =>
+                      handleAnswerSelect(currentQuestionIndex, answerIndex)
+                    }
+                    className="mr-2"
+                  />
+                  <span>{answer}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Next and previous buttons */}
+        <div className="flex justify-between">
+          {currentQuestionIndex > 0 && (
+            <button
+              type="button"
+              onClick={handlePreviousQuestion}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Previous
+            </button>
+          )}
+          {currentQuestionIndex < quiz.quiz_data.length - 1 && (
+            <button
+              type="button"
+              onClick={handleNextQuestion}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Next
+            </button>
+          )}
+          {currentQuestionIndex === quiz.quiz_data.length - 1 && (
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Submit
+            </button>
+          )}
+        </div>
       </form>
     </main>
   );
