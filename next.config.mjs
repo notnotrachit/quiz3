@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  // output: "export",
+  output: "export",
   trailingSlash: true,
 
   images: {
@@ -10,6 +10,10 @@ const nextConfig = {
       "images.unsplash.com",
       "avatars.githubusercontent.com",
     ],
+    unoptimized: true,
+  },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
   },
 };
 
