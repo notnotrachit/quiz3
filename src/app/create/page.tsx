@@ -9,9 +9,11 @@ export default function Home() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [quizName, setQuizName] = useState<string>("");
   const [quizDescription, setQuizDescription] = useState<string>("");
+  const [loadingAI, setLoadingAI] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const isLoggedIn = useIsLoggedIn();
   // console.log(isLoggedIn);
-  const { sdkHasLoaded } = useDynamicContext();
+  const { sdkHasLoaded, primaryWallet } = useDynamicContext();
   if (!sdkHasLoaded) {
     return (
       <div className="flex justify-center p-24 min-h-screen items-center">
@@ -36,6 +38,21 @@ export default function Home() {
   }
 
   async function createQuiz() {
+    // validate quiz, each question should have an answer ans at least 2 options
+    setLoading(true);
+    if (
+      questions.some(
+        (question) =>
+          question.answer === "" ||
+          question.options.length < 2 ||
+          question.options.some((option) => option === "")
+      )
+    ) {
+      alert("Please fill all the fields");
+      return;
+    }
+
+
     fetch(
       "https://incalculable-football-gigantic.functions.on-fleek.app/save_question",
       {
@@ -47,16 +64,25 @@ export default function Home() {
           quiz_data: questions,
           quiz_name: quizName,
           quiz_description: quizDescription,
-          user_address: "0x1234",
+          user_address: primaryWallet?.address,
         }),
       }
     )
-      .then((response) => response.json())
+      .then((response) => {
+        response.json()
+        setLoading(false);
+        // redirect to dashboard
+        window.location.href = "/dashboard";
+      })
       .then((response) => console.log(response))
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err)
+        setLoading(false);
+      });
   }
 
   async function getAIQuestions() {
+    setLoadingAI(true);
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -71,6 +97,11 @@ export default function Home() {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
+        // if the answer  string is not in the options, then set the answer string to empty
+        if (!response.options.includes(response.answer)) {
+          response.answer = "";
+        }
+
         setQuestions([
           ...questions,
           {
@@ -80,27 +111,18 @@ export default function Home() {
             explanation: response.explanation,
           },
         ]);
+        setLoadingAI(false);
       })
-      .catch((err) => console.error(err));
-    console.log(questions);
-    // console.log(respons.json());
-    // const question = await respons.json();
-    // console.log(question);
-    // append the question to the questions array
-    // setQuestions([
-    //   ...questions,
-    //   {
-    //     "question": question.question,
-    //     "answer": question.answer,
-    //     "options": question.options,
-    //     "explanation": question.explanation,
-    //   },
-    // ]);
+      .catch((err) => {
+        console.error(err)
+        setLoadingAI(false);
+      });
+    // console.log(questions);
   }
 
   return (
-    <main className="flex justify-center p-24 min-h-screen text-[#00ff2b]">
-      <div className="p-10 rounded-lg shadow-md backdrop-blur-xl bg-black/20 border-2 border-[#00ff2b]">
+    <main className="flex justify-center p-24 min-h-screen w-full">
+      <div className="p-10 rounded-lg shadow-md backdrop-blur bg-white/10 border-2 w-3/5">
         <h1 className="text-3xl font-bold mb-6">Create a new Quiz</h1>
 
         <form>
@@ -113,7 +135,7 @@ export default function Home() {
             name="quiz-name"
             value={quizName}
             onChange={(e) => setQuizName(e.target.value)}
-            className="bg-white/10 mt-1 block w-full rounded-md border-2 border-[#00ff2b] shadow-sm focus:ring-opacity-50"
+            className="bg-white/10 mt-1 block w-full rounded-md border-2 shadow-sm focus:ring-opacity-50"
           />
 
           <label
@@ -127,7 +149,7 @@ export default function Home() {
             name="quiz-description"
             value={quizDescription}
             onChange={(e) => setQuizDescription(e.target.value)}
-            className="bg-white/10 mt-1 block w-full rounded-md border-2 border-[#00ff2b] shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            className="bg-white/10 mt-1 block w-full rounded-md border-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
 
           <label
@@ -138,10 +160,7 @@ export default function Home() {
           </label>
           <div id="quiz-questions">
             {questions.map((question, index) => (
-              <div
-                key={index}
-                className="mt-4 border border-[#00ff2b] p-2 rounded-md"
-              >
+              <div key={index} className="mt-4 border p-2 rounded-md">
                 <textarea
                   id={`question-${index}`}
                   name={`question-${index}`}
@@ -160,7 +179,7 @@ export default function Home() {
                       })
                     )
                   }
-                  className="bg-white/10 mt-1 block w-full rounded-md border-2 border-[#00ff2b] shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-2"
+                  className="bg-white/10 mt-1 block w-full rounded-md border-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-2"
                 />
                 <label className="block text-sm font-medium">Options</label>
                 {question.options.map((option, optionIndex) => (
@@ -175,6 +194,19 @@ export default function Home() {
                         {...(question.answer === question.options[optionIndex]
                           ? { checked: true }
                           : {})}
+                        onChange={(e) =>
+                          setQuestions(
+                            questions.map((q, qIndex) => {
+                              if (qIndex === index) {
+                                return {
+                                  ...q,
+                                  answer: q.options[optionIndex],
+                                };
+                              }
+                              return q;
+                            })
+                          )
+                        }
                       />
                       <textarea
                         id={`option-${index}-${optionIndex}`}
@@ -199,7 +231,7 @@ export default function Home() {
                             })
                           )
                         }
-                        className="bg-white/10 px-2 mt-1 block w-full rounded-md border-2 border-[#00ff2b] shadow-sm focus:border-grey-300 focus:ring focus:ring-grey-200 focus:ring-opacity-50"
+                        className="bg-white/10 px-2 mt-1 block w-full rounded-md border-2 shadow-sm focus:border-grey-300 focus:ring focus:ring-grey-200 focus:ring-opacity-50"
                       />
 
                       <button
@@ -241,7 +273,7 @@ export default function Home() {
                       })
                     )
                   }
-                  className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-[#00ff2b] hover:bg-[#00ff2b]/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="btn btn-outline btn-primary mt-2 inline-flex justify-center py-2 px-4 shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Add Option
                 </button>
@@ -270,7 +302,7 @@ export default function Home() {
                       })
                     )
                   }
-                  className="bg-white/10 px-2 mt-1 block w-full rounded-md border-2 border-[#00ff2b] shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  className="bg-white/10 px-2 mt-1 block w-full rounded-md border-2 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
                 <button
                   type="button"
@@ -309,16 +341,25 @@ export default function Home() {
               type="button"
               onClick={getAIQuestions}
               className="mt-4 inline-flex justify-center btn btn-outline btn-primary"
+              disabled={loadingAI}
             >
-              Generate Questions using AI
+              {/* {loadingAI ? `<span className="loading loading-dots loading-md"></span>` : "Get AI Questions"} */}
+              {loadingAI && (
+                <span className="loading loading-dots loading-md"></span>
+              )}
+              {!loadingAI && "Get AI Questions"}
             </button>
           </div>
           <button
             onClick={createQuiz}
             type="button"
             className="mt-4 inline-flex justify-center btn btn-outline btn-primary"
+            disabled={loading}
           >
-            Create Quiz
+            {loading && (
+              <span className="loading loading-dots loading-md"></span>
+            )}
+            {!loading && "Create Quiz"}
           </button>
         </form>
       </div>

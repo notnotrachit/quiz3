@@ -103,6 +103,7 @@ export default function Play() {
       <main className="flex justify-center p-24 min-h-screen">
         <div>
           <h2 className="text-2xl font-bold mb-4">Welcome to the Quiz!</h2>
+          <h2 className="text-2xl font-bold mb-4 underline">Quiz Topic: {quiz.quiz_name}</h2>
           <button
             onClick={handleNextQuestion}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"

@@ -4,7 +4,7 @@ import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 
 export const Navbar = () => {
   return (
-    <div className="navbar bg-base-100 max-w-7xl border-2 rounded-3xl">
+    <div className="navbar backdrop-blur bg-base-100/30 max-w-7xl border-2 rounded-3xl">
       <div className="w-full flex justify-between items-center">
         <div className="">
           <a className="btn btn-ghost text-xl">
