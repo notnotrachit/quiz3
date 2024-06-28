@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function Play() {
   const isLoggedIn = useIsLoggedIn();
@@ -14,7 +15,9 @@ export default function Play() {
   const [loading, setLoading] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState<any>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1); // Start with -1 to indicate the introduction screen
-
+  const [submitting, setSubmitting] = useState(false);
+  const [showResults, setShowResults] = useState(false); // Add state to control the display of results
+  const [results, setResults] = useState<any>(null);
   useEffect(() => {
     const quiz_id = searchParams.get("quiz");
     setQuizId(quiz_id);
@@ -43,10 +46,10 @@ export default function Play() {
     });
   }
 
-  function handleAnswerSelect(questionIndex: number, answerIndex: number) {
+  function handleAnswerSelect(questionIndex: number, answer: any) {
     setSelectedAnswers((prevAnswers: any) => ({
       ...prevAnswers,
-      [questionIndex]: answerIndex,
+      [questionIndex]: answer,
     }));
   }
 
@@ -59,8 +62,8 @@ export default function Play() {
   }
 
   function handleSubmit(event: React.FormEvent) {
+    setSubmitting(true);
     event.preventDefault();
-    // Send selected answer values to the endpoint
     fetch(
       "https://incalculable-football-gigantic.functions.on-fleek.app/submit_attempt",
       {
@@ -74,9 +77,13 @@ export default function Play() {
           user_address: primaryWallet?.address,
         }),
       }
-    ).then((response) => {
+    ).then(async (response) => {
       console.log(response);
-    });
+      setShowResults(true); // Show results after submission
+      setSubmitting(false);
+      setResults(await response.json());
+      console.log(results);
+    })
   }
 
   if (!sdkHasLoaded) {
@@ -103,25 +110,44 @@ export default function Play() {
       <main className="flex justify-center p-24 min-h-screen">
         <div>
           <h2 className="text-2xl font-bold mb-4">Welcome to the Quiz!</h2>
-          <h2 className="text-2xl font-bold mb-4 underline">Quiz Topic: {quiz.quiz_name}</h2>
-          <button
-            onClick={handleNextQuestion}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
-          >
+          <h2 className="text-2xl font-bold mb-4 underline">
+            Quiz Topic: {quiz.quiz_name}
+          </h2>
+          <button onClick={handleNextQuestion} className="btn btn-primary mr-4">
             Play
           </button>
-          <button
-            onClick={() => console.log("Leaderboard button clicked")}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          <Link
+            href={"/leaderboard?quiz=" + quizId}
+            // onClick={() => console.log("Leaderboard button clicked")}
+            className="btn btn-primary"
           >
             Leaderboard
-          </button>
+          </Link>
         </div>
       </main>
     );
   }
 
   const currentQuestion = quiz.quiz_data[currentQuestionIndex];
+
+  if (showResults) {
+    // Display results page
+    return (
+      <main className="flex flex-col text-center items-center justify-center p-24 min-h-screen">
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Quiz Results</h2>
+          Congratulations, you scored {results.score} out of {results.max_score}
+          !
+        </div>
+        <Link
+          href={"/leaderboard?quiz=" + quizId}
+          className="btn btn-primary my-4"
+        >
+          Leaderboard
+        </Link>
+      </main>
+    );
+  }
 
   return (
     <main className="flex justify-center p-24 min-h-screen">
@@ -136,9 +162,11 @@ export default function Play() {
                     type="radio"
                     name={`question-${currentQuestionIndex}`}
                     value={answerIndex}
-                    checked={selectedAnswers[currentQuestionIndex] === answerIndex}
+                    checked={
+                      selectedAnswers[currentQuestionIndex] === answer
+                    }
                     onChange={() =>
-                      handleAnswerSelect(currentQuestionIndex, answerIndex)
+                      handleAnswerSelect(currentQuestionIndex, answer)
                     }
                     className="mr-2"
                   />
@@ -154,7 +182,7 @@ export default function Play() {
             <button
               type="button"
               onClick={handlePreviousQuestion}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="btn btn-primary"
             >
               Previous
             </button>
@@ -163,7 +191,7 @@ export default function Play() {
             <button
               type="button"
               onClick={handleNextQuestion}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="btn btn-primary"
             >
               Next
             </button>
@@ -171,9 +199,13 @@ export default function Play() {
           {currentQuestionIndex === quiz.quiz_data.length - 1 && (
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="btn btn-primary"
+              disabled={submitting}
             >
-              Submit
+              {submitting && (
+                <span className="loading loading-dots loading-md"></span>
+              )}
+              {!submitting && <span>Submit</span>}
             </button>
           )}
         </div>

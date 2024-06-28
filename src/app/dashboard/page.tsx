@@ -80,7 +80,7 @@ export default function Play() {
                 >
                   Copy Link
                 </button>
-                <button className="btn btn-primary">Leaderboard</button>
+                <Link className="btn btn-primary" href={"/leaderboard?quiz="+quiz.quiz_id}>Leaderboard</Link>
               </div>
             </div>
           );
