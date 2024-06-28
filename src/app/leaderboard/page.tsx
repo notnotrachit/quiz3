@@ -5,15 +5,6 @@ import { useState, useEffect } from "react";
 import { useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useSearchParams } from "next/navigation";
-import {
-  Avatar,
-  Identity,
-  Name,
-  Badge,
-  Address,
-} from "@coinbase/onchainkit/identity";
-import "@coinbase/onchainkit/styles.css";
-import { base } from "viem/chains";
 
 
 export default function Play() {
