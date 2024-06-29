@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useSearchParams } from "next/navigation";
-import { Wallet } from "@dynamic-labs/sdk-react-core";
+import Link from "next/link";
 
 export default function Play() {
   const isLoggedIn = useIsLoggedIn();
@@ -14,7 +14,10 @@ export default function Play() {
   const [quiz, setQuiz] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState<any>({});
-
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1); // Start with -1 to indicate the introduction screen
+  const [submitting, setSubmitting] = useState(false);
+  const [showResults, setShowResults] = useState(false); // Add state to control the display of results
+  const [results, setResults] = useState<any>(null);
   useEffect(() => {
     const quiz_id = searchParams.get("quiz");
     setQuizId(quiz_id);
@@ -43,16 +46,24 @@ export default function Play() {
     });
   }
 
-  function handleAnswerSelect(questionIndex: number, answerIndex: number) {
+  function handleAnswerSelect(questionIndex: number, answer: any) {
     setSelectedAnswers((prevAnswers: any) => ({
       ...prevAnswers,
-      [questionIndex]: answerIndex,
+      [questionIndex]: answer,
     }));
   }
 
+  function handleNextQuestion() {
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+  }
+
+  function handlePreviousQuestion() {
+    setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+  }
+
   function handleSubmit(event: React.FormEvent) {
+    setSubmitting(true);
     event.preventDefault();
-    // Send selected answer values to the endpoint
     fetch(
       "https://incalculable-football-gigantic.functions.on-fleek.app/submit_attempt",
       {
@@ -66,9 +77,13 @@ export default function Play() {
           user_address: primaryWallet?.address,
         }),
       }
-    ).then((response) => {
+    ).then(async (response) => {
       console.log(response);
-    });
+      setShowResults(true); // Show results after submission
+      setSubmitting(false);
+      setResults(await response.json());
+      console.log(results);
+    })
   }
 
   if (!sdkHasLoaded) {
@@ -85,37 +100,115 @@ export default function Play() {
     );
   }
 
+  if (!quiz) {
+    return null;
+  }
+
+  if (currentQuestionIndex === -1) {
+    // Introduction screen
+    return (
+      <main className="flex justify-center p-24 min-h-screen">
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Welcome to the Quiz!</h2>
+          <h2 className="text-2xl font-bold mb-4 underline">
+            Quiz Topic: {quiz.quiz_name}
+          </h2>
+          <button onClick={handleNextQuestion} className="btn btn-primary mr-4">
+            Play
+          </button>
+          <Link
+            href={"/leaderboard?quiz=" + quizId}
+            // onClick={() => console.log("Leaderboard button clicked")}
+            className="btn btn-primary"
+          >
+            Leaderboard
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  const currentQuestion = quiz.quiz_data[currentQuestionIndex];
+
+  if (showResults) {
+    // Display results page
+    return (
+      <main className="flex flex-col text-center items-center justify-center p-24 min-h-screen">
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Quiz Results</h2>
+          Congratulations, you scored {results.score} out of {results.max_score}
+          !
+        </div>
+        <Link
+          href={"/leaderboard?quiz=" + quizId}
+          className="btn btn-primary my-4"
+        >
+          Leaderboard
+        </Link>
+      </main>
+    );
+  }
+
   return (
     <main className="flex justify-center p-24 min-h-screen">
       <form onSubmit={handleSubmit}>
-        {/* Render your quiz data here */}
-        {quiz && <div>{quiz.quiz_name}</div>}
-        {/* questions */}
-        {quiz &&
-          quiz.quiz_data.map((question: any, questionIndex: number) => (
-            <div key={questionIndex}>
-              <h2>{question.question}</h2>
-              <ul>
-                {question.options.map((answer: any, answerIndex: number) => (
-                  <li key={answerIndex}>
-                    <label>
-                      <input
-                        type="radio"
-                        name={`question-${questionIndex}`}
-                        value={answerIndex}
-                        checked={selectedAnswers[questionIndex] === answer}
-                        onChange={() =>
-                          handleAnswerSelect(questionIndex, answer)
-                        }
-                      />
-                      {answer}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        <button type="submit">Submit</button>
+        <div key={currentQuestionIndex} className="mb-4">
+          <h2 className="text-xl font-bold mb-2">{currentQuestion.question}</h2>
+          <ul>
+            {currentQuestion.options.map((answer: any, answerIndex: number) => (
+              <li key={answerIndex} className="mb-2">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name={`question-${currentQuestionIndex}`}
+                    value={answerIndex}
+                    checked={
+                      selectedAnswers[currentQuestionIndex] === answer
+                    }
+                    onChange={() =>
+                      handleAnswerSelect(currentQuestionIndex, answer)
+                    }
+                    className="mr-2"
+                  />
+                  <span>{answer}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Next and previous buttons */}
+        <div className="flex justify-between">
+          {currentQuestionIndex > 0 && (
+            <button
+              type="button"
+              onClick={handlePreviousQuestion}
+              className="btn btn-primary"
+            >
+              Previous
+            </button>
+          )}
+          {currentQuestionIndex < quiz.quiz_data.length - 1 && (
+            <button
+              type="button"
+              onClick={handleNextQuestion}
+              className="btn btn-primary"
+            >
+              Next
+            </button>
+          )}
+          {currentQuestionIndex === quiz.quiz_data.length - 1 && (
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={submitting}
+            >
+              {submitting && (
+                <span className="loading loading-dots loading-md"></span>
+              )}
+              {!submitting && <span>Submit</span>}
+            </button>
+          )}
+        </div>
       </form>
     </main>
   );

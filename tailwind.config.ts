@@ -72,7 +72,13 @@ const config: Config = {
   daisyui: {
     themes: [
       "light",
-      "dark",
+      {
+        dark: {
+          ...require("daisyui/src/theming/themes")["dark"],
+          primary: "white",
+          // "primary-focus": "mediumblue",
+        },
+      },,
       {
         matrix: {
           primary: "#00ff2b",

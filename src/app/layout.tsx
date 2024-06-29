@@ -8,7 +8,7 @@ import {
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import Bg from "@/components/bg";
 import { IsBrowser } from "@dynamic-labs/sdk-react-core";
-import {Navbar} from "@/components/navbar";
+import { Navbar } from "@/components/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,11 +31,15 @@ export default function RootLayout({
         }}
       >
         <IsBrowser>{/* <Bg /> */}</IsBrowser>
-        <body className={inter.className}>
-          <div className="w-full p-8 flex justify-center items-center ">
+        <body
+          className={
+            inter.className + " dark:bg-dot-white/[0.2] bg-dot-black/[0.2]"
+          }
+        >
+          <div className="w-full p-8 flex justify-center items-center fixed top-3 z-20">
             <Navbar />
           </div>
-          {children}
+          <div className="pt-10">{children}</div>
         </body>
       </DynamicContextProvider>
     </html>
