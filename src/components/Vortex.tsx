@@ -15,8 +15,8 @@ export function VortexDemo() {
             Wanna Try??
           </h2>
           <p className="text-white text-sm md:text-2xl max-w-xl mt-6 text-center">
-            This is chemical burn. It&apos;ll hurt more than you&apos;ve ever been
-            burned and you&apos;ll have a scar.
+            This is chemical burn. It&apos;ll hurt more than you&apos;ve ever
+            been burned and you&apos;ll have a scar.
           </p>
           <div className="flex sm:flex-row justify-center gap-4 mt-6">
             {/* <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 transition duration-200 rounded-lg text-white shadow-[0px_2px_0px_0px_#FFFFFF40_inset]">
