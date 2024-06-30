@@ -75,7 +75,7 @@ export default function Play() {
           {" "}
           <table className="max-w-1/2 shadow-md rounded my-4 backdrop-blur  border-spacing-y-3 border-separate">
             <thead>
-              <tr className="flex justify-between  bg-gray-800 rounded-xl ">
+              <tr className="bg-gray-800 rounded-md ">
                 <th className="py-2 px-4  text-white font-semibold uppercase">
                   Rank
                 </th>
@@ -87,7 +87,7 @@ export default function Play() {
                 </th>
               </tr>
             </thead>
-            <tbody className="flex justify-center md:justify-between text-xs md:text-base">
+            <tbody className="justify-center md:justify-between text-xs md:text-base">
               {leaderboard &&
                 leaderboard.map((row: any, index: number) => (
                   <tr
