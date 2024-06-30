@@ -1,6 +1,8 @@
 import React from "react";
 import { BiNetworkChart } from "react-icons/bi";
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
+import Image from "next/image";
+// import DEQUIZZ from "../app/DEQUIZZ.png";
 
 export const Navbar = () => {
   return (
@@ -8,7 +10,11 @@ export const Navbar = () => {
       <div className="w-full flex justify-between items-center">
         <div className="">
           <a className="btn btn-ghost text-xl">
-            <BiNetworkChart size={40} />
+            <Image
+              src="https://raw.githubusercontent.com/yash-raj10/bookmart/main/public/DEQUIZZ.png"
+              height={40}
+              width={40}
+            />
           </a>
         </div>
 
