@@ -41,7 +41,7 @@ export function BackgroundBeamsDemo() {
         <div className="pt-6 md:pt-0">
           <AnimatedTooltipPreview />
           <p className="text-neutral-500 text-base text-center ">
-            Maid by Us with ❤️
+            Made by Us with ❤️
           </p>
         </div>
       </div>

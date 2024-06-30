@@ -422,7 +422,7 @@ export function GlobeDemo() {
           className="div"
         >
           <h2 className="text-center text-6xl md:text-6xl font-bold text-black dark:text-white">
-            DeQuiz
+            DeQuiz3
           </h2>
           <p className="text-center flex text-2xl md:text-2xl font-normal text-neutral-700 dark:text-neutral-200 max-w-md mt-2 mx-auto">
             Democratizing Quizzes for a Smarter and Decentralized Tomorrow 💡

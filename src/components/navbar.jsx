@@ -13,7 +13,7 @@ export const Navbar = () => {
         </div>
 
         <div className="hidden md:flex">
-          <a className="btn btn-ghost text-xl">DeQuiz</a>
+          <a className="btn btn-ghost text-xl">DeQuiz3</a>
         </div>
 
         <div className="flex-none gap-2 mr-3">
