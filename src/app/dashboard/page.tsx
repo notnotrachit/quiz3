@@ -5,6 +5,8 @@ import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import Link from "next/link";
 import { Meteors } from "@/components/ui/meteors";
 import { FaShareAlt } from "react-icons/fa";
+import { BsQrCodeScan } from "react-icons/bs";
+
 // import { useSearchParams } from "next/navigation";
 
 export default function Play() {

@@ -4,6 +4,7 @@ import { useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useSearchParams } from "next/navigation";
 import { SiSpacemacs } from "react-icons/si";
+import Link from "next/link";
 
 export default function Play() {
   const isLoggedIn = useIsLoggedIn();
@@ -107,7 +108,11 @@ export default function Play() {
         </div>
         <span className="flex justify-center">
           {" "}
-          <button className="btn  btn-accent">Go to Quiz!</button>
+          <Link 
+            href={"/play?quiz=" + quizId}
+          >
+            <button className="btn  btn-accent">Go to Quiz!</button>
+          </Link>
         </span>
       </div>
     </div>
