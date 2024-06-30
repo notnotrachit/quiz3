@@ -122,9 +122,13 @@ export default function Home() {
   return (
     <main className="flex justify-center p-24 min-h-screen w-full ">
       <div className="p-10 rounded-3xl shadow-md backdrop-blur  bg-white/10 border-2 w-3/5 h-1/2">
-        <h1 className="text-4xl font-bold mb-6 text-center text-transparent bg-clip-text  bg-gradient-to-b from-neutral-200 to-neutral-600">
-          Create a New Quiz
-        </h1>
+        <div className="flex gap-2">
+          {" "}
+          <h1 className="text-4xl font-bold mb-6 text-center text-transparent bg-clip-text  bg-gradient-to-b from-neutral-200 to-neutral-600">
+            Create a New Quiz
+          </h1>
+          <span className="text-3xl "> ✨</span>
+        </div>
 
         <form>
           <div className="w-full  relative ">

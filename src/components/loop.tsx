@@ -14,31 +14,39 @@ export function InfiniteMovingCardsDemo() {
 const testimonials = [
   {
     quote:
-      "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair.",
-    name: "Charles Dickens",
-    title: "A Tale of Two Cities",
+      "DeQuiz3 has revolutionized the way I learn and challenge myself. The AI-generated quizzes are both fun and educational, making Web3 concepts easier to grasp. Highly recommended!",
+    name: "Swastik ",
+    title: "Open Source Developer",
   },
   {
     quote:
-      "To be, or not to be, that is the question: Whether 'tis nobler in the mind to suffer The slings and arrows of outrageous fortune, Or to take Arms against a Sea of troubles, And by opposing end them: to die, to sleep.",
-    name: "William Shakespeare",
-    title: "Hamlet",
-  },
-  {
-    quote: "All that we see or seem is but a dream within a dream.",
-    name: "Edgar Allan Poe",
-    title: "A Dream Within a Dream",
+      "As a Web3 developer, I find DeQuiz3 incredibly useful for staying updated with the latest trends and technologies. The decentralized nature ensures transparency and fairness in every quiz.",
+    name: "Satyam",
+    title: "Web3 Developer",
   },
   {
     quote:
-      "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
-    name: "Jane Austen",
-    title: "Pride and Prejudice",
+      "DeQuiz3 is a game-changer in the ed-tech space. The seamless integration of AI and decentralization provides a robust and immersive learning experience. A must-try for anyone interested in Web3.",
+    name: "Yash ",
+    title: "FullStack Developer",
+  },
+
+  {
+    quote:
+      "As a Web3 developer, I find DeQuiz3 incredibly useful for staying updated with the latest trends and technologies. The decentralized nature ensures transparency and fairness in every quiz.",
+    name: "Satyam",
+    title: "Web3 Developer",
   },
   {
     quote:
-      "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
-    name: "Herman Melville",
-    title: "Moby-Dick",
+      "DeQuiz3 offers a unique blend of AI and blockchain technology. The quizzes are engaging, and the platform's decentralized structure adds a layer of trust and security that's unmatched.",
+    name: "Rakesh",
+    title: "Web3 Developer",
+  },
+  {
+    quote:
+      "I love how DeQuiz3 makes learning about Web3 so interactive and accessible. The AI-generated questions are always fresh and challenging, keeping me on my toes!",
+    name: "Rachit",
+    title: "FullStack Developer",
   },
 ];

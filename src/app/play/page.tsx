@@ -4,6 +4,8 @@ import { useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { BackgroundGradient } from "@/components/ui/background-gradient";
+import Image from "next/image";
 
 export default function Play() {
   const isLoggedIn = useIsLoggedIn();
@@ -83,12 +85,14 @@ export default function Play() {
       setSubmitting(false);
       setResults(await response.json());
       console.log(results);
-    })
+    });
   }
 
   if (!sdkHasLoaded) {
     return (
-      <div className="flex justify-center p-24 min-h-screen items-center">Loading...</div>
+      <div className="flex justify-center p-24 min-h-screen items-center">
+        Loading...
+      </div>
     );
   }
 
@@ -107,24 +111,66 @@ export default function Play() {
   if (currentQuestionIndex === -1) {
     // Introduction screen
     return (
-      <main className="flex justify-center p-24 min-h-screen">
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Welcome to the Quiz!</h2>
-          <h2 className="text-2xl font-bold mb-4 underline">
-            Quiz Topic: {quiz.quiz_name}
-          </h2>
-          <button onClick={handleNextQuestion} className="btn btn-primary mr-4">
-            Play
-          </button>
-          <Link
-            href={"/leaderboard?quiz=" + quizId}
-            // onClick={() => console.log("Leaderboard button clicked")}
-            className="btn btn-primary"
-          >
-            Leaderboard
-          </Link>
+      // <main className="flex justify-center p-24 min-h-screen">
+      //   <div>
+      //     <h1 className="text-3xl md:text-4xl font-bold mb-5 text-center text-transparent bg-clip-text  bg-gradient-to-b from-neutral-200 to-neutral-600">
+      //       Welcome to the Quiz!
+      //     </h1>
+      //     <h2 className="text-2xl font-bold mb-4 underline">
+      //       Quiz Title:- {quiz.quiz_name}
+      //     </h2>
+
+      //     <h2 className="text-2xl font-bold mb-4 underline">
+      //       Description:- {quiz.quiz_description}
+      //     </h2>
+      //     <button onClick={handleNextQuestion} className="btn btn-success mr-4">
+      //       Play
+      //     </button>
+      //     <Link
+      //       href={"/leaderboard?quiz=" + quizId}
+      //       // onClick={() => console.log("Leaderboard button clicked")}
+      //       className="btn btn-info"
+      //     >
+      //       Leaderboard
+      //     </Link>
+      //   </div>
+      // </main>
+
+      <div className="flex-col justify-center p-24 h-screen ">
+        <h1 className="text-4xl  md:text-4xl font-bold mb-6 text-center text-transparent bg-clip-text  bg-gradient-to-b from-neutral-200 to-neutral-600">
+          Welcome to the Quiz!
+        </h1>{" "}
+        <div className="w-full flex justify-center ">
+          <div className="md:w-2/3 xl:w-1/2 ">
+            <BackgroundGradient className="  rounded-[22px] p-4 sm:p-10 bg-white dark:bg-zinc-900">
+              <p className="text-3xl font-bold  text-black mt-4 mb-2 dark:text-neutral-200">
+                <span className=" font-normal">Quiz Title:- </span>{" "}
+                {quiz.quiz_name}
+              </p>
+
+              <p className="text-2xl font-medium text-neutral-600 dark:text-neutral-400">
+                Description:- {quiz.quiz_description}
+              </p>
+              <div className="mt-4">
+                {" "}
+                <button
+                  onClick={handleNextQuestion}
+                  className="btn btn-success mr-2"
+                >
+                  Play
+                </button>
+                <Link
+                  href={"/leaderboard?quiz=" + quizId}
+                  // onClick={() => console.log("Leaderboard button clicked")}
+                  className="btn btn-info"
+                >
+                  Leaderboard
+                </Link>
+              </div>
+            </BackgroundGradient>
+          </div>
         </div>
-      </main>
+      </div>
     );
   }
 
@@ -150,7 +196,10 @@ export default function Play() {
   }
 
   return (
-    <main className="flex justify-center p-24 min-h-screen">
+    <main className="flex-col justify-center p-14 pt-24 md:p-24 min-h-screen">
+      <h1 className="text-3xl  md:text-4xl font-bold mb-6 text-center text-transparent bg-clip-text  bg-gradient-to-b from-neutral-200 to-neutral-600">
+        Quiz Title:- {quiz.quiz_name}
+      </h1>
       <form onSubmit={handleSubmit}>
         <div key={currentQuestionIndex} className="mb-4">
           <h2 className="text-xl font-bold mb-2">{currentQuestion.question}</h2>
@@ -162,9 +211,7 @@ export default function Play() {
                     type="radio"
                     name={`question-${currentQuestionIndex}`}
                     value={answerIndex}
-                    checked={
-                      selectedAnswers[currentQuestionIndex] === answer
-                    }
+                    checked={selectedAnswers[currentQuestionIndex] === answer}
                     onChange={() =>
                       handleAnswerSelect(currentQuestionIndex, answer)
                     }
@@ -182,7 +229,7 @@ export default function Play() {
             <button
               type="button"
               onClick={handlePreviousQuestion}
-              className="btn btn-primary"
+              className="btn btn-error"
             >
               Previous
             </button>
@@ -191,7 +238,7 @@ export default function Play() {
             <button
               type="button"
               onClick={handleNextQuestion}
-              className="btn btn-primary"
+              className="btn btn-success"
             >
               Next
             </button>
@@ -199,7 +246,7 @@ export default function Play() {
           {currentQuestionIndex === quiz.quiz_data.length - 1 && (
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn btn-info"
               disabled={submitting}
             >
               {submitting && (
