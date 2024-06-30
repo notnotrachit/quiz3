@@ -1,8 +1,7 @@
 import React from "react";
 import { Vortex } from "@/components/ui/vortex";
-import { MovingBorderDemo } from "./button";
-import { AnimatedTooltipPreview } from "./people";
 import { Button } from "@/components/ui/moving-border";
+import Link from "next/link";
 
 export function VortexDemo() {
   return (
@@ -20,19 +19,16 @@ export function VortexDemo() {
             Challenge your knowledge on a cutting-edge Tech.
           </p>
           <div className="flex sm:flex-row justify-center gap-4 mt-6">
-            <Button
-              borderRadius="1.75rem"
-              className="bg-white border-2 dark:bg-slate-900 text-black dark:text-white border-neutral-200 dark:border-slate-800"
+            <Link
+              href={"/dashboard"}
             >
-              Create Quiz
-            </Button>
-
-            <Button
-              borderRadius="1.75rem"
-              className="bg-white border-2 dark:bg-fuchsia-800 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-            >
-              Explore Quizs
-            </Button>
+              <Button
+                borderRadius="1.75rem"
+                className="bg-white border-2 dark:bg-slate-900 text-black dark:text-white border-neutral-200 dark:border-slate-800"
+              >
+                Dashboard
+              </Button>
+            </Link>
 
             {/* <button className="px-4 py-2  text-white ">Watch Tutorial</button> */}
           </div>

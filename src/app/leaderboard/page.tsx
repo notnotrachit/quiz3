@@ -4,6 +4,7 @@ import { useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useSearchParams } from "next/navigation";
 import { SiSpacemacs } from "react-icons/si";
+import Link from "next/link";
 
 export default function Play() {
   const isLoggedIn = useIsLoggedIn();
@@ -74,7 +75,7 @@ export default function Play() {
           {" "}
           <table className="max-w-1/2 shadow-md rounded my-4 backdrop-blur  border-spacing-y-3 border-separate">
             <thead>
-              <tr className="flex justify-between  bg-gray-800 rounded-xl ">
+              <tr className="bg-gray-800 rounded-md ">
                 <th className="py-2 px-4  text-white font-semibold uppercase">
                   Rank
                 </th>
@@ -86,7 +87,7 @@ export default function Play() {
                 </th>
               </tr>
             </thead>
-            <tbody className="flex justify-center md:justify-between text-xs md:text-base">
+            <tbody className="justify-center md:justify-between text-xs md:text-base">
               {leaderboard &&
                 leaderboard.map((row: any, index: number) => (
                   <tr
@@ -107,7 +108,11 @@ export default function Play() {
         </div>
         <span className="flex justify-center">
           {" "}
-          <button className="btn  btn-accent">Go to Quiz!</button>
+          <Link 
+            href={"/play?quiz=" + quizId}
+          >
+            <button className="btn  btn-accent">Go to Quiz!</button>
+          </Link>
         </span>
       </div>
     </div>

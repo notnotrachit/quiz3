@@ -1,28 +1,27 @@
-# DeQuiz
-An advanced quiz platform on the fleek network. You can even generate your own quizzes and share them with your friends.
+# DeQuiz3
+An advanced quiz platform on the Fleek network. You can create your own quizzes and share them with your friends.
 
-Need help while maing questions? No problem! We have an AI question generator that will help you make questions in a jiffy.
+Need help while making questions? No problem! We have an AI question generator that will help you make questions in a jiffy.
 
-<!-- add scressnshots in dropdown -->
+<!-- add screenshots in dropdown -->
 
 <details>
 <summary>Screenshots</summary>
 
-![image](/assets/homepage.png)
+![Homepage](/assets/homepage.png)
 
 </details>
 
-
 ## Features
-- Create your own quizzes
-- Share your quizzes with your friends
+- Create quizzes
+- Share quizzes with friends
 - AI question generator
 - Leaderboard
-- Decentralized Infrastructure
+- Decentralized infrastructure
 - No ads
 
 ## Tech Stack
-- NextJS
+- Next.js
 - Fleek Network
 - IPFS
 - Fleek Functions
@@ -46,38 +45,35 @@ quiz3
     ├── lib
     └── utils
 ```
-All the fleek functions are in the `fleek_functions` directory. 
-
-The `public` directory contains all the static assets. The `src` directory contains the main source code of the project.
-
-The `app` directory contains all the pages of the app.
-
-The `components` directory contains all the reusable components. 
+- `fleek_functions`: Contains all Fleek functions.
+- `public`: Contains all static assets.
+- `src`: Contains the main source code.
+    - `app`: Contains all the app pages.
+    - `components`: Contains all reusable components.
 
 ## Fleek Functions
-We have mainly deployed 2 functions on the fleek network.<br/>
-The function files are in the `fleek_functions` directory.
+We have deployed two main functions on the Fleek network, located in the `fleek_functions` directory:
 
-1. `get_question.js` - This function is used to generate questions according to the quiz name and description using AI. 
-<br/>It's deployed link: https://small-egg-quick.functions.on-fleek.app
+1. `get_question.js` - Generates questions based on the quiz name and description using AI.
+<br/>
+[Deployed Link](https://small-egg-quick.functions.on-fleek.app)
 
-2. `quiz3.js` - This is the main function that is used for handling all quiz related things and interacting with the Turso SQLite database. <br/>It's deployed link: https://incalculable-football-gigantic.functions.on-fleek.app  <br/>It has several sub functions that we made
-
-    - `save_question` - This function is used to save the questions and create a quiz.  
-    - `get_quiz` - This function is used to get the quiz details.
-    - `submit_attempt` - This function is used to submit the attempt of the quiz.
-    - `get_user_quizes` - This function is used to get the quizzes created by the user.
-    - `get_leaderboard` - This function is used to get the leaderboard of the quiz.
-
+2. `quiz3.js` - Handles all quiz-related operations and interacts with the Turso SQLite database. <br/>
+   [Deployed Link](https://incalculable-football-gigantic.functions.on-fleek.app) <br/>
+It includes several sub-functions:
+    - `save_question`: Saves questions and creates quizzes.
+    - `get_quiz`: Retrieves quiz details.
+    - `submit_attempt`: Submits quiz attempts.
+    - `get_user_quizzes`: Retrieves quizzes created by the user.
+    - `get_leaderboard`: Retrieves the quiz leaderboard.
 
 
 ## Pages
-- Home Page - The landing page of the app.
-- Dashboard - The dashboard where you can see all the quizzes created by you.
-- Create Quiz - Create your own quiz.
-- Play Quiz - Play the quiz.
-- Leaderboard - See the leaderboard of the quiz.
-
+- **Home Page**: The landing page of the app.
+- **Dashboard**: View all quizzes created by you.
+- **Create Quiz**: Create a new quiz.
+- **Play Quiz**: Play the quiz.
+- **Leaderboard**: View the quiz leaderboard.
 
 ## Installation
 | Step | Command | Description |
@@ -88,3 +84,11 @@ The function files are in the `fleek_functions` directory.
 | 4 | `npm run dev` | Start the development server |
 
 
+## Future Plans
+- Add support for images in questions.
+- Add timed quizzes.
+- Add support for multiple correct answers.
+
+- Generate questions based on a PDF provided by the user.
+And much more
+    
