@@ -1,97 +1,90 @@
-# Next.js Boilerplate
-![Next js Boilerplate](https://github.com/fleek-tools/nextjs-template/assets/74613246/22471d74-1cfa-4645-a9cf-d1c15a6c45b2)
+# DeQuiz
+An advanced quiz platform on the fleek network. You can even generate your own quizzes and share them with your friends.
+
+Need help while maing questions? No problem! We have an AI question generator that will help you make questions in a jiffy.
+
+<!-- add scressnshots in dropdown -->
+
+<details>
+<summary>Screenshots</summary>
+
+![image](/assets/homepage.png)
+
+</details>
 
 
-## 🚀 Project Structure
+## Features
+- Create your own quizzes
+- Share your quizzes with your friends
+- AI question generator
+- Leaderboard
+- Decentralized Infrastructure
+- No ads
 
-Inside of your Next.js project, you'll see the following folders and files:
+## Tech Stack
+- NextJS
+- Fleek Network
+- IPFS
+- Fleek Functions
+- Turso SQLite DB
 
+## Project Structure
 ```
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   └── app/
-│       ├── favicon.ico
-│       ├── globals.css
-│       ├── layout.tsx
-│       └── page.tsx
-├── next.config.js
-├── tailwind.config.js
-├── tsconfig.json
-└── package.json
+quiz3
+├── fleek_functions
+├── public
+└── src
+    ├── app
+    │   ├── create
+    │   ├── dashboard
+    │   ├── home
+    │   ├── leaderboard
+    │   └── play
+    ├── components
+    │   └── ui
+    ├── data
+    ├── lib
+    └── utils
 ```
+All the fleek functions are in the `fleek_functions` directory. 
 
-If you want to lern more about the `app` router you can checkout [Next.js documentation](https://nextjs.org/docs/app/building-your-application/routing#the-app-directory).
+The `public` directory contains all the static assets. The `src` directory contains the main source code of the project.
 
-Any static assets, like images, can be placed in the `public/` directory.
+The `app` directory contains all the pages of the app.
 
+The `components` directory contains all the reusable components. 
 
-## 🧞 Commands
+## Fleek Functions
+We have mainly deployed 2 functions on the fleek network.<br/>
+The function files are in the `fleek_functions` directory.
 
-All commands are run from the root of the project, from a terminal:
+1. `get_question.js` - This function is used to generate questions according to the quiz name and description using AI. 
+<br/>It's deployed link: https://small-egg-quick.functions.on-fleek.app
 
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `pnpm install`          | Installs dependencies                            |
-| `pnpm run dev`          | Starts local dev server at `localhost:3000`      |
-| `pnpm run build`        | Build your production site to `./out/`          |
-| `pnpm run start`      | Preview your build locally, before deploying     |
-| `pnpm run lint ...`    | Run Linter |
+2. `quiz3.js` - This is the main function that is used for handling all quiz related things and interacting with the Turso SQLite database. <br/>It's deployed link: https://incalculable-football-gigantic.functions.on-fleek.app  <br/>It has several sub functions that we made
 
-## ⚡ How to deploy to Fleek
-
-### 1. Create a `fleek.json` config file:
-You can configure this site deployment using [Fleek CLI]() and running:
-```
- > fleek sites init
-   WARN! Fleek CLI is in beta phase, use it under your own responsibility
-   ? Choose one of the existing sites or create a new one. › 
-   ❯ Create a new site
-```
-It will prompt you for a `name`, `dist` directory location & `build command`
-- `name`: How you want to name the site
-- `dist`: The output directory where the site is located, for this template it's `out`
-- `build command`: Command to build your site, this will be used to deploy the latest version either by CLI or Github Actions
-
-### 2. Deploy the site
-After configuiring your `fleek.json` file, you can deployt the site by running
-
-```
-fleek sites deploy
-```
-After running it you will get an output like this:
-```
- WARN! Fleek CLI is in beta, use it at your own discretion
- > Success! Deployed!
- > Site IPFS CID: QmP1nDyoHqSrRabwUSrxRV3DJqiKH7b9t1tpLcr1NTkm1M
-
- > You can visit through the gateway:
- > https://ipfs.io/ipfs/QmP1nDyoHqSrRabwUSrxRV3DJqiKH7b9t1tpLcr1NTkm1M
- ```
-
-### Extra features
-- **Continuous Integration (CI):** `fleek sites ci` [Documentation.](https://docs.fleek.xyz/services/sites/#continuous-integration-ci)
-- **Adding custom domains:** `fleek domains create` [Documentation.](https://docs.fleek.xyz/services/domains/)
+    - `save_question` - This function is used to save the questions and create a quiz.  
+    - `get_quiz` - This function is used to get the quiz details.
+    - `submit_attempt` - This function is used to submit the attempt of the quiz.
+    - `get_user_quizes` - This function is used to get the quizzes created by the user.
+    - `get_leaderboard` - This function is used to get the leaderboard of the quiz.
 
 
-### Keep in mind:
 
-This template has been configured to produce a static output.
-
-```js
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export',  
-}
-
-module.exports = nextConfig
-
-```
-
-You can find more information about static builds in [Next Documentation](https://nextjs.org/docs/app/building-your-application/deploying/static-exports#configuration)
+## Pages
+- Home Page - The landing page of the app.
+- Dashboard - The dashboard where you can see all the quizzes created by you.
+- Create Quiz - Create your own quiz.
+- Play Quiz - Play the quiz.
+- Leaderboard - See the leaderboard of the quiz.
 
 
-## 👀 Want to learn more?
+## Installation
+| Step | Command | Description |
+| --- | --- | --- |
+| 1 | `git clone https://github.com/notnotrachit/quiz3.git` | Clone the repository |
+| 2 | `cd quiz3` | Change directory to the repository |
+| 3 | `npm install` | Install the dependencies |
+| 4 | `npm run dev` | Start the development server |
 
-Feel free to check [Next.js documentation](https://nextjs.org/docs) or jump into Next.js [learning platform](https://nextjs.org/learn/foundations/about-nextjs?utm_source=next-site&utm_medium=nav-cta&utm_campaign=next-website).
+
