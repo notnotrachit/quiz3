@@ -19,7 +19,7 @@ export function HeroScrollDemo() {
         }
       >
         <Image
-          src="https://raw.githubusercontent.com/yash-raj10/bookmart/main/public/demo.jpg"
+          src="https://raw.githubusercontent.com/yash-raj10/bookmart/5eddc9fe71edd6434b5f591a34d3827d89cc0225/public/Picsart_24-06-30_21-16-58-658.jpg"
           alt="hero"
           height={720}
           width={1400}

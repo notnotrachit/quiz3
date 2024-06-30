@@ -5,6 +5,7 @@ import { AnimatedTooltipPreview } from "@/components/people";
 import { FaGithub } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { SiFarcaster } from "react-icons/si";
+import Link from "next/link";
 
 export function BackgroundBeamsDemo() {
   return (
@@ -20,8 +21,10 @@ export function BackgroundBeamsDemo() {
             <p className="text-neutral-500 max-w-lg mx-auto my-2 text-2xl text-center relative z-10">
               Mail us at Yashraj.se10@gmail.com
             </p> */}
-
-            <FaGithub size={60} />
+            <Link href={"https://github.com/notnotrachit/quiz3"}>
+              {" "}
+              <FaGithub size={60} />
+            </Link>
 
             <FaSquareXTwitter size={60} />
             <SiFarcaster size={60} />
