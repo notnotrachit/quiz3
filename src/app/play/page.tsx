@@ -81,9 +81,9 @@ export default function Play() {
       }
     ).then(async (response) => {
       console.log(response);
-      setShowResults(true); // Show results after submission
       setSubmitting(false);
       setResults(await response.json());
+      setShowResults(true); // Show results after submission
       console.log(results);
     });
   }
@@ -107,6 +107,25 @@ export default function Play() {
   if (!quiz) {
     return null;
   }
+
+    if (showResults) {
+      // Display results page
+      return (
+        <main className="flex flex-col text-center items-center justify-center p-24 min-h-screen">
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Quiz Results</h2>
+            Congratulations, you scored {results.score} out of{" "}
+            {results.max_score}!
+          </div>
+          <Link
+            href={"/leaderboard?quiz=" + quizId}
+            className="btn btn-primary my-4"
+          >
+            Leaderboard
+          </Link>
+        </main>
+      );
+    }
 
   if (currentQuestionIndex === -1) {
     // Introduction screen
@@ -176,87 +195,78 @@ export default function Play() {
 
   const currentQuestion = quiz.quiz_data[currentQuestionIndex];
 
-  if (showResults) {
-    // Display results page
-    return (
-      <main className="flex flex-col text-center items-center justify-center p-24 min-h-screen">
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Quiz Results</h2>
-          Congratulations, you scored {results.score} out of {results.max_score}
-          !
-        </div>
-        <Link
-          href={"/leaderboard?quiz=" + quizId}
-          className="btn btn-primary my-4"
-        >
-          Leaderboard
-        </Link>
-      </main>
-    );
-  }
+
 
   return (
-    <main className="flex-col justify-center p-14 pt-24 md:p-24 min-h-screen">
-      <h1 className="text-3xl  md:text-4xl font-bold mb-6 text-center text-transparent bg-clip-text  bg-gradient-to-b from-neutral-200 to-neutral-600">
-        Quiz Title:- {quiz.quiz_name}
-      </h1>
-      <form onSubmit={handleSubmit}>
-        <div key={currentQuestionIndex} className="mb-4">
-          <h2 className="text-xl font-bold mb-2">{currentQuestion.question}</h2>
-          <ul>
-            {currentQuestion.options.map((answer: any, answerIndex: number) => (
-              <li key={answerIndex} className="mb-2">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name={`question-${currentQuestionIndex}`}
-                    value={answerIndex}
-                    checked={selectedAnswers[currentQuestionIndex] === answer}
-                    onChange={() =>
-                      handleAnswerSelect(currentQuestionIndex, answer)
-                    }
-                    className="mr-2"
-                  />
-                  <span>{answer}</span>
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
-        {/* Next and previous buttons */}
-        <div className="flex justify-between">
-          {currentQuestionIndex > 0 && (
-            <button
-              type="button"
-              onClick={handlePreviousQuestion}
-              className="btn btn-error"
-            >
-              Previous
-            </button>
-          )}
-          {currentQuestionIndex < quiz.quiz_data.length - 1 && (
-            <button
-              type="button"
-              onClick={handleNextQuestion}
-              className="btn btn-success"
-            >
-              Next
-            </button>
-          )}
-          {currentQuestionIndex === quiz.quiz_data.length - 1 && (
-            <button
-              type="submit"
-              className="btn btn-info"
-              disabled={submitting}
-            >
-              {submitting && (
-                <span className="loading loading-dots loading-md"></span>
+    <main className="flex justify-center p-14 pt-24 md:p-24 min-h-screen">
+      <div className=" md:w-2/3 xl:w-1/2">
+        <h1 className="text-3xl md:text-4xl font-bold mb-6 text-center text-transparent bg-clip-text  bg-gradient-to-b from-neutral-200 to-neutral-600">
+          Quiz Title:- {quiz.quiz_name}
+        </h1>
+        <form onSubmit={handleSubmit}>
+          <div key={currentQuestionIndex} className="mb-4">
+            <h2 className="text-xl font-bold mb-2">
+              {currentQuestion.question}
+            </h2>
+            <ul>
+              {currentQuestion.options.map(
+                (answer: any, answerIndex: number) => (
+                  <li key={answerIndex} className="mb-2">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name={`question-${currentQuestionIndex}`}
+                        value={answerIndex}
+                        checked={
+                          selectedAnswers[currentQuestionIndex] === answer
+                        }
+                        onChange={() =>
+                          handleAnswerSelect(currentQuestionIndex, answer)
+                        }
+                        className="mr-2"
+                      />
+                      <span>{answer}</span>
+                    </label>
+                  </li>
+                )
               )}
-              {!submitting && <span>Submit</span>}
-            </button>
-          )}
-        </div>
-      </form>
+            </ul>
+          </div>
+          {/* Next and previous buttons */}
+          <div className="flex justify-between">
+            {currentQuestionIndex > 0 && (
+              <button
+                type="button"
+                onClick={handlePreviousQuestion}
+                className="btn btn-error"
+              >
+                Previous
+              </button>
+            )}
+            {currentQuestionIndex < quiz.quiz_data.length - 1 && (
+              <button
+                type="button"
+                onClick={handleNextQuestion}
+                className="btn btn-success"
+              >
+                Next
+              </button>
+            )}
+            {currentQuestionIndex === quiz.quiz_data.length - 1 && (
+              <button
+                type="submit"
+                className="btn btn-info"
+                disabled={submitting}
+              >
+                {submitting && (
+                  <span className="loading loading-dots loading-md"></span>
+                )}
+                {!submitting && <span>Submit</span>}
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
     </main>
   );
 }
