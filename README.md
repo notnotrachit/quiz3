@@ -1,24 +1,23 @@
-# DeQuiz3
+# DeQuiz3 <img src="https://raw.githubusercontent.com/yash-raj10/bookmart/main/public/dequiz3.png" alt="Logo" height="70" width="70"> 
 An advanced quiz platform on the Fleek network. You can create your own quizzes and share them with your friends.
 
 Need help while making questions? No problem! We have an AI question generator that will help you make questions in a jiffy.
 
 <!-- add screenshots in dropdown -->
 
-<details>
-<summary>Screenshots</summary>
+
 
 ![Homepage](/assets/homepage.png)
 
-</details>
+
 
 ## Features
-- Create quizzes
-- Share quizzes with friends
-- AI question generator
-- Leaderboard
-- Decentralized infrastructure
-- No ads
+- **Create Quizzes**: Easily create your own quizzes.
+- **Share Quizzes**: Share your quizzes with friends.
+- **AI Question Generator**: Get help creating questions with our AI-powered generator.
+- **Leaderboard**: Compete with friends and see who tops the leaderboard.
+- **Decentralized Infrastructure**: Built on the Fleek network for a decentralized experience.
+- **No Ads**: Enjoy an ad-free experience.
 
 ## Tech Stack
 - Next.js
@@ -26,6 +25,7 @@ Need help while making questions? No problem! We have an AI question generator t
 - IPFS
 - Fleek Functions
 - Turso SQLite DB
+- Mixtral 8x22b Model - Mixture of Experts (MoE) Model
 
 ## Project Structure
 ```
